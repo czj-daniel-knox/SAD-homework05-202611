@@ -1,0 +1,12 @@
+%%{init: {"theme": "base", "themeVariables": {"fontFamily": "Microsoft YaHei, Segoe UI, Arial", "fontSize": "15px", "lineColor": "#5b6472"}, "flowchart": {"curve": "basis", "htmlLabels": true, "nodeSpacing": 40, "rankSpacing": 75}}}%%
+%% 实践课4 简图：一次请求在 coding-agent / agent / ai / 远程模型服务之间的流向
+%% ① ② ③ 是本次插桩日志对应的三个位置
+flowchart LR
+    U["终端用户<br/>输入指令"] -->|"prompt"| C["coding-agent<br/>dist/cli.js"]
+    C -->|"会话、工具、模型"| A["agent（pi-agent-core）<br/>agent-loop.ts"]
+    A -->|"① [P4] 请求模型"| I["ai（pi-ai）<br/>provider 适配 + 流式解析"]
+    I -->|"HTTPS：messages + tools"| M["远程模型服务<br/>deepseek-v4-pro"]
+    M -->|"流式响应：文本 / tool_call"| I
+    A -->|"toolCall"| T["工具<br/>read / bash / edit / write"]
+    T -->|"② [P4] 结果入上下文"| A
+    A -.->|"③ 第二轮请求（多一条 toolResult）"| I

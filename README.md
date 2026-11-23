@@ -14,6 +14,7 @@
 |---|---|---|---|
 | 实践课2 | 组织建仓与 Pi Agent 源码分析 | [`practice-02/report.md`](practice-02/report.md) | [#250](https://github.com/hunnuOpenSourceSoftware2026/assignments/issues/250) `实践课2：组织建仓与源码分析 chen zhijie` |
 | 实践课3 | Pi Agent 源码获取、依赖安装与本地编译 | [`practice-03/report.md`](practice-03/report.md) | [#251](https://github.com/hunnuOpenSourceSoftware2026/assignments/issues/251) `实践课3：Pi Agent源码安装与编译 chen zhijie` |
+| 实践课4 | Pi Agent 的模型调用与运行流程 | [`practice-04/practice-04.md`](practice-04/practice-04.md) | `实践课4：Pi Agent模型调用与运行流程 chen zhijie` |
 
 ## 实践课2 要点
 
@@ -31,6 +32,13 @@
 - 产物：`packages/coding-agent/dist/bundle/cli.js` 存在，`--version` 为 `1.5.2`；用 `.\pi-test.bat` 运行源码版并完成一次真实模型问答。
 - 困难记录：PowerShell 5.1 把 npm stderr 当错误、Windows Terminal 大量输出后停刷、`fd`/`ripgrep` 因证书校验下载失败、全局 `pi update` 提示的处理。
 
+## 实践课4 要点
+
+- 在 `packages/agent/src/agent-loop.ts` 加两行 stderr 日志：模型调用前（现第 413 行）、工具结果写入上下文后（现第 285 行），重新 `npm run build` 并启动 `dist/cli.js`。
+- 会话 A（直接问答）：0 次工具调用、1 条“即将请求模型”日志、1 轮模型调用。
+- 会话 B（`read` 读 `practice4.txt`）：1 次 `read` 工具，日志顺序为“即将请求模型 → 工具结果已加入上下文 → 即将请求模型”，2 轮模型调用，读到的代号 `P4-20261123-CZJ-KX7Q`。
+- 结论：文件是本地 `read` 工具读的，模型在第二轮才拿到 `toolResult`；下一轮请求多带一条工具结果消息。附运行流程简图。
+
 ## 仓库结构
 
 ```text
@@ -42,7 +50,14 @@ SAD-homework05-202611/
 │  └─ images/                      S1~S3 截图、依赖图、tsc 顺序实验
 └─ practice-03/
    ├─ report.md                    实践课3 报告
-   └─ images/                      S1~S6 截图
+   └─ images/                      S1~S7 截图
+```
+
+```text
+practice-04/
+├─ practice-04.md                  实践课4 报告
+├─ diagrams/flow.mmd               运行流程简图源（Mermaid）
+└─ images/                        S1~S6 截图 + 简图
 ```
 
 ## 证据与版本
