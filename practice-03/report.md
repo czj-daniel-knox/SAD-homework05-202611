@@ -4,7 +4,7 @@
 - 小组组织仓库（源码）：<https://github.com/SAD-OpenStudy/pi-hunnu-2026>
 - 实际 clone 地址：<https://github.com/SAD-OpenStudy/pi-hunnu-2026.git>
 - 源码版本：`c3cc91632d0a1950fb122605b190233f2aa0006e`（`main`）
-- 本地路径：`C:\Users\czj52\Desktop\SAD\workspace\pi-hunnu-2026`（全英文路径）
+- 本地路径：`C:\Users\czj52\Desktop\SAD\workspace\pi-hunnu-2026`
 - 环境：Node.js `v24.18.0`、npm `12.1.0`、git `2.55.0.windows.2`、Windows PowerShell `5.1.26100.9818`
 - 报告日期：2026-11-23
 
