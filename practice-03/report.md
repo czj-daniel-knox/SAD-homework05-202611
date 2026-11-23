@@ -264,6 +264,10 @@ npm run build:offline
 
 这也是后来截图里 `EXIT=0` 单独占一行的原因。
 
+![图9 PowerShell 5.1 把 npm 的 stderr 包装成 NativeCommandError 的现场](images/P3_S7_ps51_stderr.png)
+
+*图9　困难现场：用 `2>&1 | Tee-Object` 记录时，一条 `npm warn deprecated` 被 5.1 变成 `node.exe : … RemoteException`，并附带 `+ CategoryInfo …` 与 `FullyQualifiedErrorId : NativeCommandError`。这段文字很容易被误读成安装失败，实际命令退出码是 0。*
+
 ### 7.3 Windows Terminal 在大量输出后停止刷新
 
 `npm run build` 一次输出几百行（模型目录逐 provider 打印），在 Windows 的 conpty 里出现过终端画面停在半截、后面明明已经构建完成但窗口不再更新的情况，导致截图拿不到“最后一段输出”。**处理**：
@@ -307,6 +311,7 @@ Warning: Failed to download ripgrep: fetch failed: unable to verify the first ce
 | `P3_S6a_pi_start.png` | 源码版 Pi 启动界面（v1.5.2） | S6 |
 | `P3_S6b_pi_reply.png` | 提示词与实际模型回复 | S6 |
 | `P3_S6c_versions.png` | 源码 / 打包 / 全局三个入口版本对比 | 报告说明 |
+| `P3_S7_ps51_stderr.png` | PowerShell 5.1 把 npm stderr 包装成错误的现场 | §7.2 困难记录 |
 
 ### 8.2 命令清单
 
