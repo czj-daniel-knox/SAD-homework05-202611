@@ -1,0 +1,58 @@
+%%{init: {"theme": "base", "themeVariables": {"fontFamily": "Microsoft YaHei, Segoe UI, Arial", "fontSize": "14px", "lineColor": "#5b6472"}, "flowchart": {"curve": "basis", "htmlLabels": true, "nodeSpacing": 40, "rankSpacing": 55}}}%%
+%% 实践课2 模块层级与依赖关系图
+%% 箭头方向：使用方 --> 被依赖方（A --> B 表示 A 的 package.json / 源码直接依赖 B）
+%% 圆圈数字是根 package.json 中 scripts.build 的构建次序
+%% 自上而下阅读：应用层 -> 运行时 -> 领域基础 -> 基础库
+flowchart TB
+    subgraph L3["第 3 层　应用层：CLI 入口"]
+        coding["⑪ coding-agent<br/>pi-coding-agent"]
+    end
+
+    subgraph L2["第 2 层　运行时：依赖第 0/1 层"]
+        durable["⑧ durable<br/>pi-durable"]
+        env["⑨ env<br/>pi-env"]
+        agent["⑩ agent<br/>pi-agent-core"]
+    end
+
+    subgraph L1["第 1 层　领域基础：仅依赖第 0 层"]
+        chord["③ chord<br/>chord"]
+        ai["⑦ ai<br/>pi-ai"]
+    end
+
+    subgraph L0["第 0 层　基础库：无内部依赖"]
+        telemetry["① telemetry<br/>pi-telemetry"]
+        schema["② schema<br/>pi-schema"]
+        tui["④ tui<br/>pi-tui"]
+        codemode["⑤ codemode<br/>pi-codemode"]
+        mcp["⑥ mcp<br/>pi-mcp"]
+    end
+
+    coding --> agent
+    coding --> ai
+    coding --> codemode
+    coding --> mcp
+    coding --> tui
+
+    durable --> chord
+    durable --> ai
+    durable --> codemode
+    durable --> schema
+    durable --> telemetry
+    env --> chord
+    env --> durable
+    agent --> ai
+    agent --> schema
+
+    chord --> schema
+    chord --> telemetry
+    ai --> schema
+    ai --> telemetry
+
+    subgraph EXT["开发期与可选依赖（虚线，不计入根构建顺序）"]
+        evals["evals<br/>pi-evals"]
+        peers["esbuild / react / ws"]
+    end
+
+    evals -.->|devDependencies| coding
+    evals -.->|devDependencies| ai
+    chord -.->|peerDependenciesMeta.optional| peers
