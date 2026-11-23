@@ -311,6 +311,7 @@ cd packages/telemetry && npm run build
 
 | 相邻对 | 是否互相依赖 | 反证 |
 |---|---|---|
+| `telemetry` → `schema` | **否** | 两者互不 import，都是零内部依赖的基础库 |
 | `schema` → `chord` | 是（chord 依赖 schema） | §3 表 |
 | `chord` → `tui` | **否** | `tui` 的 `package.json` 无内部依赖，源码里也没有任何 `@earendil-works/*` 导入 |
 | `tui` → `codemode` | **否** | 两者都是零内部依赖，互相不 import |
@@ -321,7 +322,7 @@ cd packages/telemetry && npm run build
 | `env` → `agent` | **否** | `agent` 只依赖 ai/schema，与 env/durable/chord 无关 |
 | `agent` → `coding-agent` | 是（coding-agent 依赖 agent-core） | `coding-agent/package.json` |
 
-统计一下：11 个包之间共 9 对“相邻”，其中 5 对**没有**依赖关系。三个零内部依赖的包（`tui`、`codemode`、`mcp`）被插在中间，说明顺序里还考虑了“先出基础库、后出 CLI”的可读性以及发布/调试习惯，而不是纯粹按依赖算。
+统计一下：11 个包按顺序共 10 对“相邻”，其中只有 4 对有依赖关系，**6 对没有**。三个零内部依赖的包（`tui`、`codemode`、`mcp`）被插在中间，说明顺序里还考虑了“先出基础库、后出 CLI”的可读性以及发布/调试习惯，而不是纯粹按依赖算。
 
 另外有两个**不在顺序里**的旁证：`evals`（零 `build` 脚本）和 `apps/*`（零 `build` 脚本）压根不需要排；`tui` 的原生模块、`env` 的 Rust daemon、`ai` 的数据生成虽然也“先于使用”，却各自走独立脚本，进一步说明**根 `scripts.build` 只覆盖 Node 侧 tsc/esbuild 这条主链**。
 
