@@ -12,8 +12,8 @@
 
 | 实践 | 主题 | 报告 | 提交 Issue |
 |---|---|---|---|
-| 实践课2 | 组织建仓与 Pi Agent 源码分析 | [`practice-02/report.md`](practice-02/report.md) | `实践课2：组织建仓与源码分析 chen zhijie` |
-| 实践课3 | Pi Agent 源码获取、依赖安装与本地编译 | [`practice-03/report.md`](practice-03/report.md) | `实践课3：Pi Agent源码安装与编译 chen zhijie` |
+| 实践课2 | 组织建仓与 Pi Agent 源码分析 | [`practice-02/report.md`](practice-02/report.md) | [#250](https://github.com/hunnuOpenSourceSoftware2026/assignments/issues/250) `实践课2：组织建仓与源码分析 chen zhijie` |
+| 实践课3 | Pi Agent 源码获取、依赖安装与本地编译 | [`practice-03/report.md`](practice-03/report.md) | [#251](https://github.com/hunnuOpenSourceSoftware2026/assignments/issues/251) `实践课3：Pi Agent源码安装与编译 chen zhijie` |
 
 ## 实践课2 要点
 

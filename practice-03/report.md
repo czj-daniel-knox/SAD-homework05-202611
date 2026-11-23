@@ -16,7 +16,7 @@
 |---|---|
 | 源码在哪里 | `C:\Users\czj52\Desktop\SAD\workspace\pi-hunnu-2026`，来自小组组织仓库，`origin` 已核对，HEAD = `c3cc916…` |
 | 依赖装在哪里 | 仓库根的 `node_modules/`（npm workspaces，只装一次）；12 个内部包以 junction 形式链到 `packages/*` |
-| 构建执行了什么 | 根 `npm run build` 依次进 11 个包跑各自的 `build`：10 个是 `tsc -p tsconfig.build.json`，`ai` 额外先联网生成模型目录，`coding-agent` 最后用 esbuild 打包 |
+| 构建执行了什么 | 根 `npm run build` 依次进 11 个包跑各自的 `build`：9 个是纯 `tsc -p tsconfig.build.json`，`ai` 先联网生成模型目录再 tsc，`coding-agent` 最后用 esbuild 打包 |
 | 正在运行哪个版本 | 本地源码入口与 `dist/bundle/cli.js` 都是 **1.5.2**；第一次实践装到全局的 `pi` 是 **1.5.0**，两者可区分 |
 | 构建是否成功 | `npm run build` 退出码 `0`；`packages/coding-agent/dist/bundle/cli.js` 存在；`node … --version` 输出 `1.5.2`；bundle `84 files, 9.4 MiB` |
 | 安装是否成功 | `npm install --ignore-scripts` 退出码 `0`，`added 326 packages … found 0 vulnerabilities`（警告与错误见 §4.2） |
