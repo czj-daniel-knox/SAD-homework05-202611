@@ -2,7 +2,7 @@
 
 - 姓名：陈智杰　GitHub：[@czj-daniel-knox](https://github.com/czj-daniel-knox)
 - 小组组织仓库：<https://github.com/SAD-OpenStudy/pi-hunnu-2026>
-- 源码版本：`c3cc91632d0a1950fb122605b190233f2aa0006e`（`main`，本地构建 `1.5.2`）
+- 源码版本：`c3cc91632d0a1950fb122605b190233f2aa0006e`（`main`本地构建 `1.5.2`）
 - 本地路径：`C:\Users\czj52\Desktop\SAD\workspace\pi-hunnu-2026`
 - 模型：`deepseek-v4-pro`（A、B 两次会话相同）
 - 报告日期：2026-11-26
