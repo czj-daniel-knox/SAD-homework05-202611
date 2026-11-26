@@ -1,0 +1,35 @@
+%%{init: {"theme": "base", "themeVariables": {"fontFamily": "Microsoft YaHei, Segoe UI, Arial", "fontSize": "13px", "actorBkg": "#eef3fb", "actorBorder": "#5b6472", "signalColor": "#4a5568", "noteBkgColor": "#fff6d6", "noteBorderColor": "#b8860b"}, "sequence": {"actorMargin": 40, "messageMargin": 26, "mirrorActors": false, "showSequenceNumbers": true}}}%%
+%% 实践课5 图1：单轮工具调用的代码级时序图（session A，read handoff.txt）
+sequenceDiagram
+    autonumber
+    participant U as 用户
+    participant I as 交互与会话层<br/>interactive-mode.ts + agent-session.ts
+    participant A as Agent 执行层<br/>agent.ts + agent-loop.ts
+    participant M as 模型请求层<br/>pi-ai models.ts + openai-completions.ts
+    participant R as read 工具<br/>core/tools/read.ts
+
+    Note over M: 适配器与远端模型的分界在 https://api.deepseek.com（stream:true）
+
+    U->>I: 输入并回车<br/>editor.onSubmit(text)  interactive-mode.ts:3325
+    I->>I: onInputCallback(text) :3516<br/>getUserInput() 的 Promise resolve :4430
+    I->>I: run() 循环：await this.session.prompt(userInput) :1296
+    I->>I: AgentSession.prompt() :2175<br/>_preparePrompt() :2204 → _startRun() :1956
+    I->>A: await this.agent.prompt(messages) :1982
+    A->>A: Agent.prompt() :382 → runPromptMessages() :441
+    A->>A: runAgentLoop(...) :446
+    A->>M: streamFunction(model, llmContext, ...) :412
+    M->>M: Models.streamSimple() models.ts:958<br/>provider.streamSimple() :965
+    M->>M: openai-completions streamSimple() :720 → stream() :312
+    M-->>M: POST /chat/completions（stream:true）:385 → 远端模型
+    M-->>M: SSE 逐块解析 for await (chunk of openaiStream) :544
+    M-->>A: AssistantMessageEventStream（含 toolCall read）
+    A->>A: executeToolCalls() :520<br/>executePreparedToolCall() :826
+    A->>R: tool.execute(id, {path:"handoff.txt"}, ...) :837<br/>read.ts execute() :245
+    R->>R: selectLinesFromStream(createReadStream(...)) :300 / :142<br/>fs 分块读取 :81-92（流式，不整文件入内存）
+    R-->>A: content: [{type:"text", text:"待办…启动命令…"}]
+    A->>A: currentContext.messages.push(result) :284
+    A->>M: 第二轮 streamFunction(...)，messages 多一条 toolResult :412
+    M-->>A: 第二轮响应（最终文本）
+    A-->>I: 事件流 message_update / message_end
+    I->>I: handleEvent()：streamingComponent.updateContent() :3652 / :3698
+    I-->>U: 终端显示回复（AssistantMessageComponent）

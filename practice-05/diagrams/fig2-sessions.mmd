@@ -1,0 +1,28 @@
+%%{init: {"theme": "base", "themeVariables": {"fontFamily": "Microsoft YaHei, Segoe UI, Arial", "fontSize": "13px", "lineColor": "#5b6472"}, "flowchart": {"curve": "basis", "htmlLabels": true, "nodeSpacing": 32, "rankSpacing": 45}}}%%
+%% 实践课5 图2：恢复旧会话 vs 新建会话，发给模型的消息有什么不同
+flowchart TB
+    S["A 阶段结束<br/>Pi 已用 read 读到 handoff.txt 并回答启动命令<br/>会话文件里已有 4 条消息：user / assistant(toolCall) / toolResult / assistant(text)"]
+
+    S --> L0["退出 Pi"]
+    S --> R0["仍留在 Pi 里"]
+
+    subgraph LEFT["左分支：恢复旧会话"]
+        L0 --> L1["node .\\packages\\coding-agent\\<br/>dist\\cli.js -c<br/>args.ts:111 → parsed.continue = true"]
+        L1 --> L2["main.ts:480<br/>SessionManager.continueRecent(cwd)"]
+        L2 --> L3["findMostRecentSession() :1814<br/>找到最近的 .jsonl 会话文件"]
+        L3 --> L4["SessionManager 构造<br/>loadEntriesFromFile() :1040<br/>恢复 user / assistant / toolResult"]
+        L4 --> L5["sdk.ts:409<br/>Agent initialState.messages = existingSession.messages"]
+        L5 --> L6["用户输入：接着上次的待办起草 README 启动说明<br/>不要调用工具"]
+        L6 --> L7["AgentSession.prompt → agent.prompt<br/>消息 = A 阶段 4 条历史 + 本次提问（共 5 条）"]
+        L7 --> L8["回复含完整命令 quartz-68707<br/>1 次模型调用，0 次工具调用"]
+    end
+
+    subgraph RIGHT["右分支：新建会话"]
+        R0 --> R1["输入 /new<br/>interactive-mode.ts:3429"]
+        R1 --> R2["handleClearCommand() :7117<br/>runtimeHost.newSession() :7120"]
+        R2 --> R3["AgentSessionRuntime.newSession() :226<br/>SessionManager.create() :239（空会话文件）"]
+        R3 --> R4["createRuntime → Agent initialState.messages = []"]
+        R4 --> R5["用户输入完全相同的提问"]
+        R5 --> R6["AgentSession.prompt → agent.prompt<br/>消息 = 仅本次提问（共 1 条）"]
+        R6 --> R7["回复：没有交接单内容，无法给出命令<br/>1 次模型调用，0 次工具调用"]
+    end

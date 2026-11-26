@@ -15,6 +15,7 @@
 | 实践课2 | 组织建仓与 Pi Agent 源码分析 | [`practice-02/report.md`](practice-02/report.md) | [#250](https://github.com/hunnuOpenSourceSoftware2026/assignments/issues/250) `实践课2：组织建仓与源码分析 chen zhijie` |
 | 实践课3 | Pi Agent 源码获取、依赖安装与本地编译 | [`practice-03/report.md`](practice-03/report.md) | [#251](https://github.com/hunnuOpenSourceSoftware2026/assignments/issues/251) `实践课3：Pi Agent源码安装与编译 chen zhijie` |
 | 实践课4 | Pi Agent 的模型调用与运行流程 | [`practice-04/practice-04.md`](practice-04/practice-04.md) | [#283](https://github.com/hunnuOpenSourceSoftware2026/assignments/issues/283) `实践课4：Pi Agent模型调用与运行流程 chen zhijie` |
+| 实践课5 | Pi Agent 工具调用与会话恢复 | [`practice-05/practive-05.md`](practice-05/practive-05.md) | `实践课5：Pi Agent工具调用与会话恢复 chen zhijie` |
 
 ## 实践课2 要点
 
@@ -39,6 +40,13 @@
 - 会话 B（`read` 读 `practice4.txt`）：1 次 `read` 工具，日志顺序为“即将请求模型 → 工具结果已加入上下文 → 即将请求模型”，2 轮模型调用，读到的代号 `P4-20261123-CZJ-KX7Q`。
 - 结论：文件是本地 `read` 工具读的，模型在第二轮才拿到 `toolResult`；下一轮请求多带一条工具结果消息。附运行流程简图。
 
+## 实践课5 要点
+
+- `handoff.txt` 用随机标识 `quartz-68707`；A 阶段一次 `read` 工具调用、两轮模型调用，原样给出待办与启动命令。
+- `-c` 恢复会话后提问：0 次工具、1 次模型调用，回复含完整命令（A 的 4 条历史消息 + 新提问一起发给模型）。
+- `/new` 新建会话、相同提问：0 次工具、1 次模型调用，回复说明没有交接单内容。
+- 图1 为五条生命线的代码级时序图，图2 为恢复/新建两条分支的对照图，均附 Mermaid 图源；read 工具实际走流式读取（`selectLinesFromStream` + `fs` 分块）。
+
 ## 仓库结构
 
 ```text
@@ -58,6 +66,14 @@ practice-04/
 ├─ practice-04.md                  实践课4 报告
 ├─ diagrams/flow.mmd               运行流程简图源（Mermaid）
 └─ images/                        S1~S6 截图 + 简图
+```
+
+```text
+practice-05/
+├─ practive-05.md                  实践课5 报告（文件名沿用作业要求写法）
+├─ diagrams/fig1-sequence.mmd      图1 时序图源（Mermaid）
+├─ diagrams/fig2-sessions.mmd      图2 对照图源（Mermaid）
+└─ images/                        A/B 截图 + 两张图
 ```
 
 ## 证据与版本
