@@ -15,7 +15,7 @@
 | 实践课2 | 组织建仓与 Pi Agent 源码分析 | [`practice-02/report.md`](practice-02/report.md) | [#250](https://github.com/hunnuOpenSourceSoftware2026/assignments/issues/250) `实践课2：组织建仓与源码分析 chen zhijie` |
 | 实践课3 | Pi Agent 源码获取、依赖安装与本地编译 | [`practice-03/report.md`](practice-03/report.md) | [#251](https://github.com/hunnuOpenSourceSoftware2026/assignments/issues/251) `实践课3：Pi Agent源码安装与编译 chen zhijie` |
 | 实践课4 | Pi Agent 的模型调用与运行流程 | [`practice-04/practice-04.md`](practice-04/practice-04.md) | [#283](https://github.com/hunnuOpenSourceSoftware2026/assignments/issues/283) `实践课4：Pi Agent模型调用与运行流程 chen zhijie` |
-| 实践课5 | Pi Agent 工具调用与会话恢复 | [`practice-05/practive-05.md`](practice-05/practive-05.md) | `实践课5：Pi Agent工具调用与会话恢复 chen zhijie` |
+| 实践课5 | Pi Agent 工具调用与会话恢复 | [`practice-05/practive-05.md`](practice-05/practive-05.md) | [#348](https://github.com/hunnuOpenSourceSoftware2026/assignments/issues/348) `实践课5：Pi Agent工具调用与会话恢复 chen zhijie` |
 
 ## 实践课2 要点
 
